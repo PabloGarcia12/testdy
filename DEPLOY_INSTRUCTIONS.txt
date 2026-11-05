@@ -1,0 +1,11 @@
+DURAN YACHTS — CLOUDFLARE + RESEND
+
+1. BACK UP the current GitHub testdy repository.
+2. In GitHub PabloGarcia12/testdy (main branch), upload index.html, worker.js, wrangler.jsonc, and the entire img/ folder from this ZIP. Keep the folder named img.
+3. Cloudflare builds should run automatically with existing deploy command: npx wrangler deploy.
+4. After the new Worker deploys, open Cloudflare > Workers & Pages > testdy > Settings > Variables and secrets. Add a SECRET named RESEND_API_KEY and paste your Resend API key there. NEVER add it to GitHub.
+5. If prompted, deploy a new version with the secret.
+6. Visit https://www.duranyachts.com/ and submit a test inquiry. Verify delivery at salva@duranyachts.com and that the confirmation appears.
+
+CAUTION: This will replace the old GitHub landing page with the new Duran Yachts site. Do not delete the Cloudflare custom domain/route or DNS settings.
+The HTML retains the site's existing design and image paths.
