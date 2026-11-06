@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
   <url>
     <loc>https://duranyachts.com/</loc>
     <xhtml:link rel="alternate" hreflang="en"
@@ -9,14 +8,12 @@
     <xhtml:link rel="alternate" hreflang="es"
                 href="https://duranyachts.com/es/"/>
   </url>
-
-  <url>
+ <url>
     <loc>https://duranyachts.com/es/</loc>
     <xhtml:link rel="alternate" hreflang="en"
                 href="https://duranyachts.com/"/>
     <xhtml:link rel="alternate" hreflang="es"
                 href="https://duranyachts.com/es/"/>
   </url>
-
 </urlset>
 
