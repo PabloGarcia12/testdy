@@ -4,9 +4,16 @@ const reply = (body, status=200) => new Response(JSON.stringify(body), {
 });
 const esc = (v) => String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
-    if(url.pathname !== '/api/contact') return env.ASSETS.fetch(request);
+  
+async fetch(request, env) {
+  const url = new URL(request.url);
+
+  if (url.pathname === '/en' || url.pathname === '/en/') {
+    return Response.redirect('https://www.duranyachts.com/', 301);
+  }
+
+  if(url.pathname !== '/api/contact') return env.ASSETS.fetch(request);
+
     if(request.method !== 'POST') return reply({ok:false,error:'Method not allowed'},405);
     const origin=request.headers.get('origin');
     if(origin && new URL(origin).hostname !== url.hostname) return reply({ok:false,error:'Invalid origin'},403);
