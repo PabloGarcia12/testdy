@@ -3,14 +3,79 @@
 <html lang="en">
 <head>
  
-<!-- Google Analytics 4 — Duran Yachts -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-L0CNWB17W9"></script>
+
+<!-- Duran Yachts - Privacy-first Google Analytics -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-L0CNWB17W9');
+
+  // No analytics until the visitor explicitly accepts.
+  gtag('consent', 'default', {
+    analytics_storage: 'denied',
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied'
+  });
+
+  // Disable GA4 before its script can load.
+  window['ga-disable-G-L0CNWB17W9'] = true;
 </script>
+
+<!-- Duran Yachts - Cookie consent management -->
+<script>
+(function () {
+  const GA_ID = 'G-L0CNWB17W9';
+  const KEY = 'dy_analytics_consent';
+
+  function loadAnalytics() {
+    if (window.dyAnalyticsLoaded) return;
+    window.dyAnalyticsLoaded = true;
+
+    window['ga-disable-' + GA_ID] = false;
+    gtag('consent', 'update', {
+      analytics_storage: 'granted'
+    });
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(script);
+
+    gtag('js', new Date());
+    gtag('config', GA_ID);
+  }
+
+  window.dySetConsent = function (accepted) {
+    try {
+      localStorage.setItem(KEY, accepted ? 'accepted' : 'rejected');
+    } catch (e) {}
+
+    if (accepted) {
+      loadAnalytics();
+    } else {
+      window['ga-disable-' + GA_ID] = true;
+      gtag('consent', 'update', {
+        analytics_storage: 'denied'
+      });
+    }
+
+    const banner = document.getElementById('dy-cookie-banner');
+    if (banner) banner.hidden = true;
+  };
+
+  window.dyOpenConsent = function () {
+    const banner = document.getElementById('dy-cookie-banner');
+    if (banner) banner.hidden = false;
+  };
+
+  try {
+    if (localStorage.getItem(KEY) === 'accepted') {
+      loadAnalytics();
+    }
+  } catch (e) {}
+})();
+</script>
+
 
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
