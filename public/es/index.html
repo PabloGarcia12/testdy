@@ -2,15 +2,78 @@
 
 <html lang="es">
 <head>
-  
-<!-- Google Analytics 4 - Duran Yachts -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-L0CNWB17W9"></script>
+
+<!-- Duran Yachts - Google Analytics with consent -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-L0CNWB17W9');
+
+  gtag('consent', 'default', {
+    analytics_storage: 'denied',
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied'
+  });
+
+  window['ga-disable-G-L0CNWB17W9'] = true;
 </script>
+
+<script>
+(function () {
+  const GA_ID = 'G-L0CNWB17W9';
+  const KEY = 'dy_analytics_consent';
+
+  function loadAnalytics() {
+    if (window.dyAnalyticsLoaded) return;
+    window.dyAnalyticsLoaded = true;
+
+    window['ga-disable-' + GA_ID] = false;
+    gtag('consent', 'update', { analytics_storage: 'granted' });
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(script);
+
+    gtag('js', new Date());
+    gtag('config', GA_ID);
+  }
+
+  window.dySetConsent = function (accepted) {
+    try {
+      localStorage.setItem(KEY, accepted ? 'accepted' : 'rejected');
+    } catch (e) {}
+
+    if (accepted) {
+      loadAnalytics();
+    } else {
+      window['ga-disable-' + GA_ID] = true;
+      gtag('consent', 'update', {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied'
+      });
+
+      document.cookie.split(';').forEach(function (cookie) {
+        const name = cookie.split('=')[0].trim();
+        if (name === '_ga' || name.startsWith('_ga_')) {
+          ['/', '/es/', '/about/', '/es/about/'].forEach(function (path) {
+            document.cookie = name + '=; Max-Age=0; path=' + path;
+          });
+        }
+      });
+    }
+  };
+
+  try {
+    if (localStorage.getItem(KEY) === 'accepted') {
+      loadAnalytics();
+    }
+  } catch (e) {}
+})();
+</script>
+
 
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
@@ -646,7 +709,11 @@ nav .navr{flex-shrink:0}
 <div class="footer-block footer-contact"><div class="footer-label">CONTACTO</div><a class="footer-email" href="mailto:salva@duranyachts.com">salva@duranyachts.com</a><div class="footer-links"><a href="/es/">Inicio</a><a href="/">English</a></div></div>
 <div class="footer-block footer-legal"><div class="footer-label">INFORMACIÓN PROFESIONAL</div><p>Duran Yachts es una empresa de intermediación náutica con licencia en Florida. Las marcas de los astilleros pertenecen a sus respectivos titulares y se mencionan únicamente para describir la experiencia profesional; no implican afiliación ni respaldo.</p><p>El asesoramiento legal, fiscal y financiero corresponde a profesionales independientes, no a Duran Yachts.</p></div>
 </div>
-<div class="footer-bottom"><span>© 2026 Duran Yachts</span><span>Tu aventura es lo primero. El barco adecuado viene después.</span></div>
+<div class="footer-bottom">
+  <span>© 2026 Duran Yachts</span>
+  <span>Tu travesía es lo primero. El barco adecuado viene después.</span>
+  <a href="#" data-cookie-preferences>Preferencias de cookies</a>
+</div>
 </div></footer>
 <script>
 // reveal on scroll
@@ -678,5 +745,113 @@ document.getElementById('f').addEventListener('submit',async function(ev){
   }finally{btn.disabled=false;btn.textContent='Enviar';}
 });
 </script>
+  
+<!-- Duran Yachts - Aviso de privacidad -->
+<style>
+  #dy-cookie-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: min(560px, calc(100% - 40px));
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 28px 32px;
+    box-shadow: 0 12px 40px rgba(0,0,0,.12);
+    z-index: 9999;
+    font-family: Inter, Arial, sans-serif;
+    display: none;
+  }
+  #dy-cookie-banner h3 {
+    margin: 0 0 12px;
+    font-size: 22px;
+    color: #1d1d1f;
+  }
+  #dy-cookie-banner p {
+    margin: 0 0 24px;
+    color: #667085;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .dy-cookie-actions {
+    display: flex;
+    gap: 12px;
+  }
+  .dy-cookie-actions button {
+    flex: 1;
+    padding: 13px 16px;
+    border-radius: 11px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  #dy-reject {
+    background: #fff;
+    border: 1px solid #d1d5db;
+    color: #1d1d1f;
+  }
+  #dy-accept {
+    background: #095dc4;
+    border: 1px solid #095dc4;
+    color: white;
+  }
+  @media (max-width: 480px) {
+    #dy-cookie-banner {
+      bottom: 12px;
+      left: 12px;
+      width: calc(100% - 24px);
+      box-sizing: border-box;
+      padding: 22px;
+    }
+  }
+</style>
+
+<div id="dy-cookie-banner" role="dialog"
+     aria-label="Preferencias de privacidad">
+  <h3>Tu privacidad importa</h3>
+  <p>
+    Utilizamos cookies de análisis opcionales para comprender
+    cómo se utiliza nuestra web. Puedes aceptarlas o rechazarlas
+    sin que esto afecte a tu experiencia.
+  </p>
+  <div class="dy-cookie-actions">
+    <button type="button" id="dy-reject">Rechazar</button>
+    <button type="button" id="dy-accept">Aceptar</button>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const banner = document.getElementById('dy-cookie-banner');
+  const key = 'dy_analytics_consent';
+
+  let choice = null;
+  try {
+    choice = localStorage.getItem(key);
+  } catch (e) {}
+
+  if (choice !== 'accepted' && choice !== 'rejected') {
+    banner.style.display = 'block';
+  }
+
+  document.getElementById('dy-reject').addEventListener('click', function () {
+    window.dySetConsent(false);
+    banner.style.display = 'none';
+  });
+
+  document.getElementById('dy-accept').addEventListener('click', function () {
+    window.dySetConsent(true);
+    banner.style.display = 'none';
+  });
+
+  document.querySelectorAll('[data-cookie-preferences]').forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      event.preventDefault();
+      banner.style.display = 'block';
+    });
+  });
+});
+</script>
+
 </body>
 </html>
