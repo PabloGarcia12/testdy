@@ -50,14 +50,37 @@
       localStorage.setItem(KEY, accepted ? 'accepted' : 'rejected');
     } catch (e) {}
 
-    if (accepted) {
-      loadAnalytics();
-    } else {
-      window['ga-disable-' + GA_ID] = true;
-      gtag('consent', 'update', {
-        analytics_storage: 'denied'
+    
+if (accepted) {
+  loadAnalytics();
+} else {
+  window['ga-disable-' + GA_ID] = true;
+
+  gtag('consent', 'update', {
+    analytics_storage: 'denied',
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied'
+  });
+
+  // Remove existing GA4 cookies for this website.
+  document.cookie.split(';').forEach(function (cookie) {
+    const name = cookie.split('=')[0].trim();
+
+    if (name === '_ga' || name.startsWith('_ga_')) {
+      [
+        '/',
+        '/es/',
+        '/about/',
+        '/es/about/'
+      ].forEach(function (path) {
+        document.cookie = name +
+          '=; Max-Age=0; path=' + path;
       });
     }
+  });
+}
+
 
     const banner = document.getElementById('dy-cookie-banner');
     if (banner) banner.hidden = true;
@@ -616,7 +639,16 @@ nav .navr{flex-shrink:0}
 <div class="footer-block footer-contact"><div class="footer-label">GET IN TOUCH</div><a class="footer-email" href="mailto:salva@duranyachts.com">salva@duranyachts.com</a><div class="footer-links"><a href="/">Home</a><a href="/es/">Español</a></div></div>
 <div class="footer-block footer-legal"><div class="footer-label">PROFESSIONAL INFORMATION</div><p>Duran Yachts is a Florida-licensed yacht brokerage. Builder names are trademarks of their respective owners and are mentioned only to describe professional experience; no affiliation or endorsement is implied.</p><p>Legal, tax and financing advice is provided by independent professionals, not by Duran Yachts.</p></div>
 </div>
-<div class="footer-bottom"><span>© 2026 Duran Yachts</span><span>Your journey comes first. The right boat follows.</span></div>
+
+<div class="footer-bottom">
+  <span>© 2026 Duran Yachts</span>
+  <span>Your journey comes first. The right boat follows.</span>
+  <a href="#" onclick="event.preventDefault();dyOpenConsent();"
+     style="font-size:12px;color:#697380;text-decoration:underline;">
+    Cookie preferences
+  </a>
+</div>
+
 </div></footer>
 <script>
 // reveal on scroll
@@ -647,5 +679,92 @@ document.getElementById('f').addEventListener('submit',async function(ev){
   }finally{btn.disabled=false;btn.textContent='Send';}
 });
 </script>
+ 
+<!-- Duran Yachts - Cookie consent banner -->
+<style>
+#dy-cookie-banner[hidden] { display: none !important; }
+#dy-cookie-banner {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 9999;
+  width: min(420px, calc(100% - 40px));
+  padding: 22px;
+  background: #fff;
+  color: #1d1d1f;
+  border: 1px solid #e5e5ea;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.12);
+  font-family: Inter, Arial, sans-serif;
+}
+#dy-cookie-banner strong {
+  display: block;
+  margin-bottom: 9px;
+  font-size: 16px;
+}
+#dy-cookie-banner p {
+  margin: 0 0 18px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #606775;
+}
+.dy-cookie-actions {
+  display: flex;
+  gap: 10px;
+}
+.dy-cookie-actions button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.dy-cookie-accept {
+  background: #0a5cc2;
+  color: white;
+  border: 1px solid #0a5cc2;
+}
+.dy-cookie-reject {
+  background: white;
+  color: #1d1d1f;
+  border: 1px solid #d4d4d8;
+}
+</style>
+
+<div id="dy-cookie-banner" role="region"
+     aria-label="Analytics cookie preferences" hidden>
+  <strong>Your privacy matters</strong>
+  <p>
+    We use optional analytics cookies to understand how
+    visitors use our website. You can accept or reject
+    them without affecting your experience.
+  </p>
+  <div class="dy-cookie-actions">
+    <button type="button" class="dy-cookie-reject"
+            onclick="dySetConsent(false)">
+      Reject
+    </button>
+    <button type="button" class="dy-cookie-accept"
+            onclick="dySetConsent(true)">
+      Accept
+    </button>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  let choice = null;
+  try {
+    choice = localStorage.getItem('dy_analytics_consent');
+  } catch (e) {}
+
+  if (choice !== 'accepted' && choice !== 'rejected') {
+    document.getElementById('dy-cookie-banner').hidden = false;
+  }
+});
+</script>
+
 </body>
 </html>
